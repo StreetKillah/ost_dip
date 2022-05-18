@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>  
-    <title>Правило СПТ</title>
+    <title>Правило SPT</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="styles.css" />
 </head>
   
 <body>
-
     <header class="page-header">
             <h1>Построение диаграммы Гантта по правилу SPT</h1>
     </header>
@@ -28,25 +27,31 @@
 
 <div class="container-1">
     <form class="input-form">
-        <div class="form-group">
+        <div class="text-group">
+            <!-- <div class="form-group">
             <label>Process ID: </label>
             <input type="number" id="PID" name="PID" value="">
-        </div>
+        </div> -->
         <div class="form-group">
-            <label>Burst Time: </label>
-            <input type="number" id="burstTime" value="">
+            <label>Размер партии: </label>
+            <input type="number" id="numberOfdetails" value="">
         </div>
-        <div class="form-group">
-            <label>Arrival Time: </label>
-            <input type="number" id="arrivalTime" value="">
+        <!-- <div class="form-group">
+            <label>Количество партий: </label>
+            <input type="number" id="numberOfparts" value="">
+        </div> -->
         </div>
-        <div class="form-group">
-            <button class="button" type="button" onclick="createTable()">Enter values</button>
-        </div>
-
-        <div class="form-group">
-            <button class="button" type="button" onclick="printGanttChart()">Show Gantt Chart</button>
-        </div>  
+        
+            <div class="button-group">
+                <div class="form-group">
+                    <button class="button" type="button"  onclick="createTable()">Enter values</button>
+                </div>
+        
+                <div class="form-group">
+                    <button class="button" type="button" onclick="printGanttChart()">Show Gantt Chart</button>
+                </div> 
+            </div>
+         
 </form>
 </div>
 </div>  
@@ -55,9 +60,15 @@
 <div class="container">
     <table id="inputTable">
         <tr>
-            <th>PID</th>
-            <th>Burst Time</th>
-            <th>Arrival Time</th>
+            <th>Номер детали</th>
+           
+        </tr>
+    </table>
+
+    <table id="sortedTable">
+        <tr>
+            <th>Номер детали</th>
+           
         </tr>
     </table>
 </div>
@@ -70,7 +81,7 @@
     <script src="https://www.amcharts.com/lib/3/gantt.js"></script>
     <script src="https://www.amcharts.com/lib/3/themes/black.js"></script>
     <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
     
     <div id="chartdiv"></div>   

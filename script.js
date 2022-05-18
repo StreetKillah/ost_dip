@@ -6,236 +6,263 @@ $("#toggle").on('click', function () {
         document.querySelector(".form-group-2 label").innerHTML = "Установить правило SPT";
     }
 })
+  
 
-
-function createTable()
-{
-    var processID=document.getElementById("PID").value;
-    var burstTime=document.getElementById("burstTime").value;
-    var arrivalTime=document.getElementById("arrivalTime").value;
-
-    var table=document.getElementById("inputTable");
-    var firstRow = table.insertRow(-1);
-    var cell1 = firstRow.insertCell(0);
-    var cell2 = firstRow.insertCell(1);
-    var cell3 = firstRow.insertCell(2);
-
-    cell1.innerHTML=processID;
-    cell2.innerHTML=burstTime;
-    cell3.innerHTML=arrivalTime;
-
-    var x = document.getElementById("inputTable").rows.length;
-   // console.log(x);
+ getRandom = (min, max, num) => {
+    return  Math.floor(Math.floor(Math.random() * (max - min + 1) + min) / num) * num;
 }
 
 
-function GetCellValues()
- {
-    var pid =[];
-    var at =[];
-    var bt =[];
-    var flag =[];
-    var bt2=[];
+//10 станков...
+createTable = () => {   
+    let table=document.getElementById("inputTable");
+    var numberOfdetails=document.getElementById("numberOfdetails").value;
 
+
+    for(let i = 0; i < numberOfdetails; i++){
+        
+        let firstRow = table.insertRow(-1);
+        let cell1 = firstRow.insertCell(-1);
+        for(let j = 0; j < 10; j++){
+           // var secondRow = table.insertRow(-1);
+            let cell2 = firstRow.insertCell(-1);
+            cell2.innerHTML = getRandom(0, 700, 50); 
+        }
+
+        cell1.innerHTML=i+1;
+    }
+
+    GetCellValues(numberOfdetails);
+}
+
+
+ GetCellValues = (numberOfdetails) => {
+  
     // items is the sorted list
     var items = [];
+    let defaultArray = [];
+
+    /*---------------------------------------------MY EDIT----------------------------------------------------------------*/
 
     var table = document.getElementById('inputTable');
+    let tempSum;
+    let nextTemp;
+ 
+
     for (var r = 1, n = table.rows.length; r < n; r++) {
-        for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
-             //console.log(table.rows[r].cells[c].innerHTML);
+        tempSum = 0;
+        for (var c = 1, m = table.rows[r].cells.length; c < m; c++) {
+         tempSum += parseInt(table.rows[r].cells[c].innerHTML);
+         nextTemp += parseInt(table.rows[r].cells[c].innerHTML);
         }
-        pid.push(parseInt(table.rows[r].cells[0].innerHTML));
-        bt.push(parseInt(table.rows[r].cells[1].innerHTML));
-        bt2.push(parseInt(table.rows[r].cells[1].innerHTML));
-        at.push(parseInt(table.rows[r].cells[2].innerHTML));
-        flag.push(0);
+        defaultArray.push(tempSum);
+        continue;
     }
+
+
+    let filteredArray = defaultArray.filter(el => el !== 0);
+
+    console.log(filteredArray.sort((a,b) => a - b));
+
+
+    let sortedTable = document.getElementById('sortedTable');
+
+    for(let i = 0; i < numberOfdetails; i++){
+        let firstRow = sortedTable.insertRow(-1);
+        let cell1 = firstRow.insertCell(-1);
+        for(let j = 0; j < 10; j++){
+            var cell2 = firstRow.insertCell(-1);
+            
+        }
+        cell2.innerHTML = filteredArray[i];
+        cell1.innerHTML=i+1;
+    }
+
+
+   
+
+     /*---------------------------------------------MY EDIT----------------------------------------------------------------*/
     
     var toggle = document.getElementById("toggle").checked;
     
     if (toggle == true)
         items = preemptiveSelection(pid,at,bt,flag,bt2);
     else
-        items = nonPreemptiveSelection(pid,at,bt,flag);
+       // items = nonPreemptiveSelection(pid,at,bt,flag);
     
     return items;
 
   }
 
 
-  function nonPreemptiveSelection(pid,at,bt,flag)
-  {
-    var n = pid.length;
-    var clock = 0;
-    var tot = 0;
-    var items =[];
-    var ct=[];
-    var ta=[];
-    var wt=[];
-    var avgwt=0;
-    var avgta=0;
+// nonPreemptiveSelection = (pid,at,bt,flag) => {
+//     var n = pid.length;
+//     var clock = 0;
+//     var tot = 0;
+//     var items =[];
+//     var ct=[];
+//     var ta=[];
+//     var wt=[];
+//     var avgwt=0;
+//     var avgta=0;
     
 
-    while(true)
-    {
-        var min=100;
-        var c = n; // c represents the current PID
-        if (tot == n) // total no of process = completed process loop will be terminated
-            break;
+//     while(true)
+//     {
+//         var min=100;
+//         var c = n; // c represents the current PID
+//         if (tot == n) // total no of process = completed process loop will be terminated
+//             break;
         
-        for (var i=0; i< n; i++)
-        {
-            /*
-             * If i'th process arrival time <= system time and its flag=0 and burst<min 
-             * That process will be executed first 
-             */ 
-            var count=0;
-            if ((at[i] <= clock) && (flag[i] == 0) && (bt[i]<min))
-                {
-                    min=bt[i];
-                    c=i;
-                } 
+//         for (var i=0; i< n; i++)
+//         {
+//             /*
+//              * If i'th process arrival time <= system time and its flag=0 and burst<min 
+//              * That process will be executed first 
+//              */ 
+//             var count=0;
+//             if ((at[i] <= clock) && (flag[i] == 0) && (bt[i]<min))
+//                 {
+//                     min=bt[i];
+//                     c=i;
+//                 } 
 
-        }
-        /* If c==n means c value can not updated because no process arrival time< system time so we increase the system time */
-        if (c==n) 
-            clock++;
-        else
-        {
-            var temp = [];
-            temp.push(pid[c]);
-            temp.push(bt[c]);
-            items.push(temp);
+//         }
+//         /* If c==n means c value can not updated because no process arrival time< system time so we increase the system time */
+//         if (c==n) 
+//             clock++;
+//         else
+//         {
+//             var temp = [];
+//             temp.push(pid[c]);
+//             temp.push(bt[c]);
+//             items.push(temp);
 
-            ct[c]=clock+bt[c];
-            ta[c]=ct[c]-at[c];
-            wt[c]=ta[c]-bt[c];
+//             ct[c]=clock+bt[c];
+//             ta[c]=ct[c]-at[c];
+//             wt[c]=ta[c]-bt[c];
             
-            clock+=bt[c];
-            flag[c]=1;
-            tot++;   
-        }
-    }
+//             clock+=bt[c];
+//             flag[c]=1;
+//             tot++;   
+//         }
+//     }
 
-    for(i=0;i<n;i++)
-    {
-        avgwt +=wt[i];
-        avgta +=ta[i];
-    }
+//     for(i=0;i<n;i++)
+//     {
+//         avgwt +=wt[i];
+//         avgta +=ta[i];
+//     }
 
-    avgwt/=n;
-    avgta/=n;
-    printStat(ct,ta,wt,avgwt,avgta,pid); 
-    return items;
-  }
+//     avgwt/=n;
+//     avgta/=n;
+//     printStat(ct,ta,wt,avgwt,avgta,pid); 
+//     return items;
+//   }
 
-
-  function preemptiveSelection(pid,at,bt,flag,bt2)
-  {
-    var n = pid.length;
-    var clock = 0;
-    var tot = 0;
-    var items =[];
-    var ct=[];
-    var ta=[];
-    var wt=[];
-    var avgwt=0;
-    var avgta=0;
+//  preemptiveSelection = (pid,at,bt,flag,bt2) =>{
+//     var n = pid.length;
+//     var clock = 0;
+//     var tot = 0;
+//     var items =[];
+//     var ct=[];
+//     var ta=[];
+//     var wt=[];
+//     var avgwt=0;
+//     var avgta=0;
     
-    var count2=0;
+//     var count2=0;
 
-    while (true)
-    {
-        var c = n;
-        var min =100;
-        if (tot==n)
-        {
-            items.push(temp);
-            break;
-        }
+//     while (true)
+//     {
+//         var c = n;
+//         var min =100;
+//         if (tot==n)
+//         {
+//             items.push(temp);
+//             break;
+//         }
             
-        for (var i=0; i< n; i++)
-        {
-            /*
-             * If i'th process arrival time <= system time and its flag=0 and burst<min 
-             * That process will be executed first 
-             */ 
-            var count=0;
-            if ((at[i] <= clock) && (flag[i] == 0) && (bt[i]<min))
-                {
-                    min=bt[i];
-                    c=i;
-                } 
+//         for (var i=0; i< n; i++)
+//         {
+//             /*
+//              * If i'th process arrival time <= system time and its flag=0 and burst<min 
+//              * That process will be executed first 
+//              */ 
+//             var count=0;
+//             if ((at[i] <= clock) && (flag[i] == 0) && (bt[i]<min))
+//                 {
+//                     min=bt[i];
+//                     c=i;
+//                 } 
 
-        }
+//         }
         
-        // If there's no c:
-        if (c==n)
-        {
-            clock+=1;
-        }
-        // If there's a c:
-        else
-        {
-            bt[c]--;
-            clock++;
-            if (bt[c]==0)
-            {   
-                ct[c]=clock;
-                flag[c]=1
-                tot++;
-            }
+//         // If there's no c:
+//         if (c==n)
+//         {
+//             clock+=1;
+//         }
+//         // If there's a c:
+//         else
+//         {
+//             bt[c]--;
+//             clock++;
+//             if (bt[c]==0)
+//             {   
+//                 ct[c]=clock;
+//                 flag[c]=1
+//                 tot++;
+//             }
 
-            if (count2==0)
-            {
-                //temp2 holds the previous c
-                var temp2=c;
-                var temp = [];
-                temp.push(pid[c]);
-                temp.push(1)
-            }
+//             if (count2==0)
+//             {
+//                 //temp2 holds the previous c
+//                 var temp2=c;
+//                 var temp = [];
+//                 temp.push(pid[c]);
+//                 temp.push(1)
+//             }
 
-            else
-            {
-                 if (c==temp2)
-                {
-                    temp[1]++;
-                }
-                else
-                {
-                    items.push(temp);
-                    var temp =[];
-                    temp.push(pid[c]);
-                    temp.push(1);
-                    temp2=c;
-                }
-            }
-            console.log(c); 
-            count2++;
-        }
+//             else
+//             {
+//                  if (c==temp2)
+//                 {
+//                     temp[1]++;
+//                 }
+//                 else
+//                 {
+//                     items.push(temp);
+//                     var temp =[];
+//                     temp.push(pid[c]);
+//                     temp.push(1);
+//                     temp2=c;
+//                 }
+//             }
+//             console.log(c); 
+//             count2++;
+//         }
            
-    }
+//     }
 
-    for(i=0;i<n;i++)
-    {
-        ta[i] = ct[i] - at[i];
-        wt[i] = ta[i] - bt2[i];
-        avgwt +=wt[i];
-        avgta +=ta[i];
-    }
+//     for(i=0;i<n;i++)
+//     {
+//         ta[i] = ct[i] - at[i];
+//         wt[i] = ta[i] - bt2[i];
+//         avgwt +=wt[i];
+//         avgta +=ta[i];
+//     }
 
-    avgwt/=n;
-    avgta/=n;
+//     avgwt/=n;
+//     avgta/=n;
 
-    printStat(ct,ta,wt,avgwt,avgta,pid);            
-    return items;
+//     printStat(ct,ta,wt,avgwt,avgta,pid);            
+//     return items;
         
-}
+// }
 
 
-function generateGanttChartData(data)
-{   
+generateGanttChartData = (data) => {   
     // Data contains the processes in the required order
     var n = data.length;
     var finalData = [];
@@ -269,8 +296,7 @@ function generateGanttChartData(data)
 
 
 
-function printGanttChart()
-{
+ printGanttChart = () => {
     //chartData contains data for dataProvider KEY
     var chartData = generateGanttChartData(GetCellValues());
     
@@ -326,8 +352,7 @@ function printGanttChart()
 }
 
 
-function printStat(ct,ta,wt,avgwt,avgta,pid)
-{
+ printStat = (ct,ta,wt,avgwt,avgta,pid) => {
     console.log(ct);
     console.log(ta);
     console.log(wt);

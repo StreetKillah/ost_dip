@@ -3,7 +3,22 @@ body {
 	color: rgb(0, 0, 0);
 	line-height:1.6em;
 	margin:0;
+	font-family: "Roboto Light";
 }
+
+@font-face { 
+    font-family: "Roboto Light";
+    src: 
+         url("./font/Roboto-Light.ttf") format("truetype"),
+		 
+}
+@font-face { 
+    font-family: "Roboto Italic";
+    src: 
+         url("./font/Roboto-Italic.ttf") format("truetype"),
+		 
+}
+
 
 .button{
 	background-color: #2196F3;
@@ -43,17 +58,19 @@ body {
 	word-spacing: 0.3em;
 	padding:1px;
 	margin: auto;
+	font-family:"Roboto Italic";
 }
 
 .container-1{
-	width: 40%;
+	width: 50%;
 	margin: 0 auto;
 	border: 1px;
+	
 }
 
 .input-form {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin-left: 80px;
 }
 
@@ -83,7 +100,7 @@ table{
 	margin:auto;
 	margin-bottom: 50px;
 	text-align: center;
-	table-layout: fixed;
+	table-layout: auto;
 }
 
 table, tr, th, td{
