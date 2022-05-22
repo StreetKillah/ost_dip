@@ -13,42 +13,6 @@ $("#toggle").on('click', function () {
     return  Math.floor(Math.floor(Math.random() * (max - min + 1) + min) / num) * num;
 }
 
-// const rebuildTable = (t) => {
-//   for(let i = 1; i < numberOfdetails; i++){
-//     for(let j = 0; j < i; j++ ){
-//       if(parseInt(t.rows[j].cells[1].innerHTML) > parseInt(t.rows[j].cells[1].innerHTML)){
-//         let temp = t.rows[i];
-//         t.rows[i] = t.rows[i + 1];
-//         t.rows[i + 1] = temp;
-//       }
-//     }
-//     console.log(t.rows[i]);
-//   }
-//   return t;
-// }
-// const putNums = (index) => {
-//       return `<td class="detail_row">${parseInt(index + 1)}</td>`
-//   }
-
-//   const putStanki = (n) => {
-
-//         for(let i = 0; i < 10; i++){
-//          return `<td class="detail_row">${getRandom(0,700,50)}</td>`
-//         }
-      
-//     }
- 
-
-// var data = [
-//   {value: [200,400,300,100,50,250,550,500,200,350]},
-//   {value: [50,450,300,100,50,250,550,500,0,350]},
-//   {value: [150,350,0,100,50,150,650,450,200,350]}
-// ];
-
-
-
-
-
  
  createTable = () => {
   var numberOfdetails = document.getElementById("numberOfdetails").value;
@@ -62,52 +26,78 @@ $("#toggle").on('click', function () {
    }
 
   createMatrix = (stanki, numberOfdetails) => {
-    var matrix = [];
     var dig_matrix = [];
-
+ 
     for (let i = 0; i < numberOfdetails; i++) {
-        matrix[i] = [];
-        dig_matrix[i] = [];
+       dig_matrix[i] = [];
         for (let j = 0; j < stanki; j++) {
-           // var div = document.createElement('div');
-          //  div.className = 'cell';
-           // matrix[i][j] = div;
-            dig_matrix[i][j] = getRandom(0,700,50);
+        var div = document.createElement('div');
+        div.className = 'cell';
+          dig_matrix[i][j] = getRandom(0,700,50);
 
-           // div.innerHTML = getRandom(0,700,50);
         }
     }
     
     return dig_matrix;
  }
 
- var m = createMatrix(10,numberOfdetails);
- console.log(m)
 
-  // var w =10;
-  // var h = numberOfdetails;
-  // var m = createMatrix(w,h);
-  
-  // var d = document.getElementsByClassName("container")[0];
-  // for(let i=0; i<m.length; i++){
-  //     let row = m[i]
-  //     for(let j=0; j<row.length; j++){
-  //         d.appendChild(row[j]);
-  //     }
-  //     d.appendChild(document.createElement('div')); //для разделения строк
-  // }
+  let w =10;
+  let h = numberOfdetails;
+  let m = createMatrix(w,h);
+
+  console.log(m)
+
+  let d = document.querySelector(".unsorted > tbody");
+  for(let i=0; i<m.length; i++){
+    let row_id = document.createElement('td');
+    row_id.innerHTML = `${i+1}`;
+    let row = m[i];
+    let r = document.createElement('tr');
+     // r.innerHTML = `${m[i]}`;
+     d.appendChild(r);
+     r.appendChild(row_id);
+      for(let j=0; j < row.length; j++){
+        let col = document.createElement('td');
+        col.innerHTML = `${row[j]}`;
+       r.appendChild(col);
+      }
+      d.appendChild(document.createElement('div')); //для разделения строк
+  }
 
 //console.log(createMatrix(10, numberOfdetails));
 
 
 $("#toggle_spt").on('click', function () {
   if ( $(this).is(':checked') ) {
-      document.querySelector(".form-group-3 label").innerHTML = "Снять правило LUKR";
+      document.querySelector(".form-group-3 label").innerHTML = "Снять правило SPT";
       console.log('/////////////////////ПОСЛЕ СОРТИРОВКИ///////////////////////////////////////////');
+     
       console.log(rebuildMatrix(m));
+
+
+      let d = document.querySelector(".sorted > tbody");
+      for(let i=0; i<m.length; i++){
+        let row_id = document.createElement('td');
+        row_id.innerHTML = `${i+1}`;
+        let row = m[i];
+        let r = document.createElement('tr');
+         // r.innerHTML = `${m[i]}`;
+         d.appendChild(r);
+         r.appendChild(row_id);
+          for(let j=0; j < row.length; j++){
+            let col = document.createElement('td');
+            col.innerHTML = `${row[j]}`;
+           r.appendChild(col);
+          }
+          d.appendChild(document.createElement('div')); //для разделения строк
+      }
+
+
+      
   }
   else {
-      document.querySelector(".form-group-3 label").innerHTML = "Установить правило LUKR";
+      document.querySelector(".form-group-3 label").innerHTML = "Установить правило SPT";
   }
 })
 
