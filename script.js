@@ -1,4 +1,6 @@
-$("#toggle").on('click', function () {
+
+
+  $("#toggle").on('click', function () {
     if ( $(this).is(':checked') ) {
         document.querySelector(".form-group-2 label").innerHTML = "Снять правило LUKR";
         sortTable(".sortable");
@@ -50,7 +52,7 @@ $("#toggle").on('click', function () {
 
   let d = document.querySelector(".unsorted > tbody");
   for(let i=0; i<m.length; i++){
-    let row_id = document.createElement('td');
+    const row_id = document.createElement('td');
     row_id.innerHTML = `${i+1}`;
     let row = m[i];
     let r = document.createElement('tr');
@@ -66,6 +68,8 @@ $("#toggle").on('click', function () {
   }
 
 //console.log(createMatrix(10, numberOfdetails));
+
+
 
 
 $("#toggle_spt").on('click', function () {
@@ -94,6 +98,86 @@ $("#toggle_spt").on('click', function () {
       }
 
 
+
+      var barOptions_stacked = {
+        hover :{
+            animationDuration:10
+        },
+        scales: {
+            xAxes: [{
+                label:"Duration",
+                ticks: {
+                    beginAtZero:true,
+                    fontFamily: "'Open Sans Bold', sans-serif",
+                    fontSize:11
+                },
+                scaleLabel:{
+                    display:false
+                },
+                gridLines: {
+                }, 
+                stacked: true
+            }],
+            yAxes: [{
+                gridLines: {
+                    display:false,
+                    color: "#fff",
+                    zeroLineColor: "#fff",
+                    zeroLineWidth: 0
+                },
+                ticks: {
+                    fontFamily: "'Open Sans Bold', sans-serif",
+                    fontSize:11
+                },
+                stacked: true
+            }]
+        },
+        legend:{
+            display:false
+        },
+    };
+
+// var taskArray = m.map((row) => (
+//   {  data: row,
+//     backgroundColor: ['red', 'green', 'blue', 'yellow'],
+ 
+// }));
+
+var ctx = document.getElementById("myChart");
+var myChart = new Chart(ctx, {    
+    type: 'horizontalBar',
+    data: {
+        labels: m.map(item => `Деталь ${m.indexOf(item) + 1}`),
+        datasets: [{
+                data: [0,1500,1800,1900,2200],
+                backgroundColor: "rgba(63,103,126,0)",
+                hoverBackgroundColor: "rgba(50,90,100,0)"
+            },
+            {
+              data: [2800, 2500,2000,1500, 2200],
+              backgroundColor: ['red', 'green', 'blue', 'yellow','brown'],
+          }]
+  
+     },
+    options: barOptions_stacked,
+});
+
+
+
+console.log(Object.values(myChart.data.datasets[0]))
+
+
+   
+   
+
+// this part to make the tooltip only active on your real dataset
+var originalGetElementAtEvent = myChart.getElementAtEvent;
+myChart.getElementAtEvent =  (e) => {
+    return originalGetElementAtEvent.apply(this, arguments).filter((e) => {
+        return e._datasetIndex === 1;
+    });
+}
+
       
   }
   else {
@@ -105,59 +189,6 @@ $("#toggle_spt").on('click', function () {
 
 
 }
-
-
-
-
-
-
-
-
-//10 станков...
-// createTable = () => {   
-
-//   // добавим саму таблицу на страницу
-//   $('.container').append('<table class="dataTable"><thead></thead><tbody></tbody></table>'); 
-  
-//   // добавим шапку
-//   $('.dataTable > thead').append(
-//       '<tr><th>№</th></tr>'
-//     );
-  
-//   // пройдем уиклом по всем элементам массива и сгенерируем строки таблицы
-//   data.forEach((item, i, arr) => {
-//     $('.dataTable > tbody').append(
-//       `<tr class="row-item">
-//       <td>${(i + 1)}</td>
-//       ${item.value.map(el => {
-//         return `<td class="time">${el}</td>`
-//       })}`
-//     );
-//   });
-
-
-//   const compareRows = (table) => {
-//     var rows = table.rows;
-//     var cell, cells;
-//     var rowText;
-  
-//     // For each row in the table
-//     for (var i=0, iLen=rows.length; i<iLen; i++) {
-//       row = rows[i];
-//       cells = row.cells;
-//       // Compare the text in each cell
-//       for (var j=0; j < 1; j++) {
-//       }
-//       var arr = [];
-      
-//     }
- 
-
-//   }
-  
-// }
-
-
 
 
 
@@ -224,44 +255,6 @@ $("#toggle_spt").on('click', function () {
 
 
 
-//  GetCellValues = (numberOfdetails) => {
-  
-//     let defaultArray = [];
-
-//     /*---------------------------------------------MY EDIT----------------------------------------------------------------*/
-
-//     var table = document.getElementById('inputTable');
-//     let tempSum;
-   
-
-//     for (var r = 1, n = table.rows.length; r < n; r++) {
-//         tempSum = 0;
-//         for (var c = 1, m = table.rows[r].cells.length; c < m; c++) {
-//          tempSum += parseInt(table.rows[r].cells[c].innerHTML);
-        
-//         }
-//         defaultArray.push(tempSum);
-//         continue;
-//     }
-
-
-//     let filteredArray = defaultArray.filter(el => el !== 0);
-
-//     let sortedTable = document.getElementById('sortedTable');
-
-//     for(let i = 0; i < numberOfdetails; i++){
-//         let firstRow = sortedTable.insertRow(-1);
-//         let cell1 = firstRow.insertCell(-1);
-//         let cell2 = firstRow.insertCell(-1);
-//         // for(let j = 0; j < 10; j++){
-//         //     cell2 = firstRow.insertCell(-1);
-            
-//         // }
-//         cell2.innerHTML = filteredArray[i];
-//         cell1.innerHTML=i+1;
-//     }
-//   }
-
 
 // generateGanttChartData = (data) => {   
 //     // Data contains the processes in the required order
@@ -269,7 +262,7 @@ $("#toggle_spt").on('click', function () {
 //     var finalData = [];
 //     var clock = 0;
     
-//     //console.log(n);
+//     console.log(data[0]);
 
 //     for (var i=0; i<n; i++)
 //     {
@@ -283,14 +276,18 @@ $("#toggle_spt").on('click', function () {
 //                 }, ]
 //             }
 
-//         temp.category = "Process " + (parseInt(data[i][0])).toString();
+//         temp.category = "Деталь " + (parseInt(i + 1)).toString();
 //         temp.segments[0].start = clock;
-//         temp.segments[0].duration = data[i][1];
-//         temp.segments[0].task = "Process " + (parseInt(data[i][0])).toString();
+      
+//         temp.segments[0].duration = data[i][0];
+//         temp.segments[0].task = "Деталь " + (i + 1).toString();
 
 //         clock = clock + data[i][1];
 //         finalData.push(temp);
 //     }
+
+
+    
      
 //     return finalData;
 // }

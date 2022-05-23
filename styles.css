@@ -225,3 +225,11 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+
+.graph_container{
+	display:block;
+	width:700px;
+	justify-content: center;
+  }
