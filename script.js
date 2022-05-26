@@ -95,6 +95,8 @@ $("#toggle_spt").on('click', function () {
           d.appendChild(document.createElement('div')); //для разделения строк
       }
 
+      
+
 
 
 createData = (c, arr) => {
@@ -115,9 +117,12 @@ createData = (c, arr) => {
           console.log(varObj)
           c.currentOptions.series.push(varObj);
       }
+
 }
 
-      
+var numberOfparts = document.getElementById("numberOfparts").value;
+
+var withParts = m.map(item => item.map(el => el * numberOfparts));
 
 
 
@@ -131,6 +136,10 @@ var chart = JSC.chart('chartDiv', {
     /*Time Y Axis.*/
     yAxis_scale_type: 'stacked', 
     xAxis_scale_type: 'stacked',
+    yAxis_line_breaks :{
+      invert: true
+
+    },
     yAxis_formatString: 'MMMM', 
     xAxis: {
         scale_type: 'stacked',
@@ -138,14 +147,16 @@ var chart = JSC.chart('chartDiv', {
     },
     xAxis_defaultTick_label_style: { 
       fontSize: 16, 
-      fontWeight: 'bold'
+      fontWeight: 'bold',
     }, 
     
     defaultPoint_opacity: 0.8, 
     
     legend: { 
       template: '%icon %name', 
-      position: 'inside top right'
+      position: 'inside top right',
+      reversed: true,
+      
     }, 
     title_label_text: 'Расписание обработки деталей', 
     
@@ -266,9 +277,15 @@ var chart = JSC.chart('chartDiv', {
     ], 
     toolbar_visible: false
   }); 
- 
-  createData(chart, m);
 
+  
+
+
+console.log(withParts)
+
+createData(chart, withParts);
+
+document.querySelector('.prim').innerHTML = `На диаграмме учитано количество партий ${numberOfparts}`;
 
 
    
