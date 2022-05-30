@@ -33,7 +33,7 @@
         for (let j = 0; j < stanki; j++) {
         var div = document.createElement('div');
         div.className = 'cell';
-          dig_matrix[i][j] = getRandom(0,700,50);
+          dig_matrix[i][j] = getRandom(0,500,10);
 
         }
     }
